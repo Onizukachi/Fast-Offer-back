@@ -1,24 +1,3 @@
-# README
+# Подготовься к собесу и получи крутой оффер
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Здесь вы найдете базу вопросов по всем известным IT языкам, а так статистику по вакансиям, кампаниям и прочему.
