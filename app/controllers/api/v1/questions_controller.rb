@@ -4,6 +4,7 @@ module Api
   module V1
     class QuestionsController < ApplicationController
       before_action :set_question, only: %i[show update destroy]
+      before_action :authenticate_user!, only: %i[create update destroy]
 
       # GET /api/v1/questions
       def index
@@ -19,7 +20,7 @@ module Api
 
       # POST /api/v1/questions
       def create
-        @question = Question.new(question_params)
+        @question = current_user.questions.build(question_params)
 
         if @question.save
           render json: @question, status: :created
