@@ -10,9 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_26_111136) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_29_132431) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "positions", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "image_filename"
+    t.index ["image_filename"], name: "index_positions_on_image_filename", unique: true
+    t.index ["title"], name: "index_positions_on_title", unique: true
+  end
+
+  create_table "positions_questions", force: :cascade do |t|
+    t.bigint "position_id", null: false
+    t.bigint "question_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["position_id", "question_id"], name: "index_positions_questions_on_position_id_and_question_id", unique: true
+    t.index ["position_id"], name: "index_positions_questions_on_position_id"
+    t.index ["question_id"], name: "index_positions_questions_on_question_id"
+  end
 
   create_table "questions", force: :cascade do |t|
     t.text "body", null: false
@@ -37,5 +56,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_111136) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "positions_questions", "positions"
+  add_foreign_key "positions_questions", "questions"
   add_foreign_key "questions", "users"
 end
