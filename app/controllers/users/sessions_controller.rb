@@ -2,6 +2,8 @@
 
 module Users
   class SessionsController < Devise::SessionsController
+    include RackSessionFix
+
     respond_to :json
 
     private
@@ -9,16 +11,17 @@ module Users
     def respond_with(resource, _opts = {})
       render json: {
         status: { message: 'Logged in sucessfully.' },
-        data: resource
+        user: resource
       }, status: :ok
     end
 
     def respond_to_on_destroy
       header = request.headers['authorization'].split(' ')[1]
-      key = Rails.application.credentials.fetch(:secret_key_base)
+      key = Rails.application.credentials.devise_jwt_secret_key!
       jwt_payload = JWT.decode(header, key).first
       current_user = User.find(jwt_payload['sub'])
       log_out_success && return if current_user
+
       log_out_failure
     end
 

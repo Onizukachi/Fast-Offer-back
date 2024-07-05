@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 # Если нужно отключить куки и сессии, придется фиксить баг с девайсом
-# нужно сэмулировать фейк сессию, но тут тоже есть баг, когда мы пытаемся удалить профиль #DESTROY /sign_up
-# получаем NoMethodError (undefined method `destroy' for {}:Devise::Controllers::Rails7ApiMode::FakeRackSession):
+# нужно сэмулировать фейк сессию
 # https://github.com/heartcombo/devise/pull/5474
 module RackSessionFix
   extend ActiveSupport::Concern
@@ -11,6 +10,8 @@ module RackSessionFix
     def enabled?
       false
     end
+
+    def destroy; end
   end
 
   included do

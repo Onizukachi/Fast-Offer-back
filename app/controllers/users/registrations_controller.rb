@@ -2,6 +2,7 @@
 
 module Users
   class RegistrationsController < Devise::RegistrationsController
+    include RackSessionFix
     respond_to :json
 
     private
@@ -10,7 +11,7 @@ module Users
       if request.method == 'POST' && resource.persisted?
         render json: {
           status: { message: 'Signed up sucessfully.' },
-          data: resource
+          user: resource
         }, status: :ok
       elsif request.method == 'DELETE'
         render json: {
