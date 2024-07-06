@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Question < ApplicationRecord
+  acts_as_taggable_on :tags
+
   belongs_to :user
   has_many :answers, dependent: :destroy
   has_many :positions, through: :position_questions
