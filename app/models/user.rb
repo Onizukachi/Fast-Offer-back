@@ -7,14 +7,18 @@ class User < ApplicationRecord
 
   enum role: { basic: 0, moderator: 1, admin: 1 }, _suffix: :role
 
+  validates :username, presence: true, length: { minimum: 3 }, uniqueness: true
+  validates :password, confirmation: true
+  validates :password_confirmation, presence: true
+
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
   has_many :likes, dependent: :destroy
 
   before_save :set_gravatar_hash, if: :email_changed?
 
-  def name_from_email
-    email.split('@').first
+  def name_or_email
+    username || email.split('@').first
   end
 
   def ban

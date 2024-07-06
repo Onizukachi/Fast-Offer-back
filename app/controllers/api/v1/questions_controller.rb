@@ -15,6 +15,7 @@ module Api
 
       # GET /api/v1/questions/:id
       def show
+        @question.increment!(:views_count)
         render json: { data: @question }, status: :ok
       end
 

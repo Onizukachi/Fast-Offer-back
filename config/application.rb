@@ -11,6 +11,9 @@ module EasyOfferBackend
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
+    config.i18n.available_locales = %i[en ru]
+    config.i18n.default_locale = :ru
+
     # Enabled the session store for api_only application
     # config.session_store :cookie_store, key: '_interslice_session'
     # config.middleware.use ActionDispatch::Cookies
