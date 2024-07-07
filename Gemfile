@@ -20,7 +20,7 @@ gem 'acts-as-taggable-on', '~> 10.0'
 gem 'rails-i18n', '~> 7.0.0'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
-# gem "jbuilder"
+gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"

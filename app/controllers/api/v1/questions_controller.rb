@@ -8,9 +8,8 @@ module Api
 
       # GET /api/v1/questions
       def index
-        @questions = Question.all
-
-        render json: { data: @questions }, status: :ok
+        @questions = Question.all.preload(:answers, :author, :tags)
+        @likes_count = LikesCountQuery.new(@questions)
       end
 
       # GET /api/v1/questions/:id
