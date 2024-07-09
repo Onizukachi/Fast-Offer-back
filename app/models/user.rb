@@ -17,7 +17,7 @@ class User < ApplicationRecord
 
   before_save :set_gravatar_hash, if: :email_changed?
 
-  def name_or_email
+  def nickname
     username || email.split('@').first
   end
 

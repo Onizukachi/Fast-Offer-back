@@ -11,13 +11,18 @@ Rails.application.routes.draw do
                registration: 'signup'
              },
              controllers: {
-               sessions: 'users/sessions',
-               registrations: 'users/registrations'
+               sessions: 'api/v1/users/sessions',
+               registrations: 'api/v1/users/registrations'
              }
 
   namespace :api do
     namespace :v1 do
-      resources :questions
+      resources :questions do
+        member do
+          post 'like', to: 'questions#like'
+          delete 'unlike', to: 'questions#unlike'
+        end
+      end
       resources :positions, except: %i[show]
     end
   end

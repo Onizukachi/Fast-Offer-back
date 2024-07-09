@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_06_121730) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_08_085317) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,7 +48,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_06_121730) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
+    t.index ["user_id", "likeable_type", "likeable_id"], name: "index_likes_on_user_id_and_likeable_type_and_likeable_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "position_questions", force: :cascade do |t|
+    t.bigint "position_id", null: false
+    t.bigint "question_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["position_id", "question_id"], name: "index_position_questions_on_position_id_and_question_id", unique: true
+    t.index ["position_id"], name: "index_position_questions_on_position_id"
+    t.index ["question_id"], name: "index_position_questions_on_question_id"
   end
 
   create_table "positions", force: :cascade do |t|
@@ -58,16 +69,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_06_121730) do
     t.string "image_filename"
     t.index ["image_filename"], name: "index_positions_on_image_filename", unique: true
     t.index ["title"], name: "index_positions_on_title", unique: true
-  end
-
-  create_table "positions_questions", force: :cascade do |t|
-    t.bigint "position_id", null: false
-    t.bigint "question_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["position_id", "question_id"], name: "index_positions_questions_on_position_id_and_question_id", unique: true
-    t.index ["position_id"], name: "index_positions_questions_on_position_id"
-    t.index ["question_id"], name: "index_positions_questions_on_question_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -132,8 +133,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_06_121730) do
   add_foreign_key "answers", "users"
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "users"
-  add_foreign_key "positions_questions", "positions"
-  add_foreign_key "positions_questions", "questions"
+  add_foreign_key "position_questions", "positions"
+  add_foreign_key "position_questions", "questions"
   add_foreign_key "questions", "users"
   add_foreign_key "taggings", "tags"
 end

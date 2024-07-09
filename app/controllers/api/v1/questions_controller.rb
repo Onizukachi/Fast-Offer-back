@@ -3,19 +3,19 @@
 module Api
   module V1
     class QuestionsController < ApplicationController
-      before_action :set_question, only: %i[show update destroy]
-      before_action :authenticate_user!, only: %i[create update destroy]
+      before_action :authenticate_user!, except: %i[index show]
+      before_action :set_question, except: %i[index]
 
       # GET /api/v1/questions
       def index
-        @questions = Question.all.preload(:answers, :author, :tags)
+        @questions = Question.all.preload(:answers, :author, :tags, :positions, :likes)
         @likes_count = LikesCountQuery.new(@questions)
       end
 
       # GET /api/v1/questions/:id
       def show
         @question.increment!(:views_count)
-        render json: { data: @question }, status: :ok
+        render json: { question: @question }, status: :ok
       end
 
       # POST /api/v1/questions
@@ -41,6 +41,24 @@ module Api
       # DELETE /api/v1/questions/:id
       def destroy
         @group.destroy
+      end
+
+      # POST /api/v1/questions/:id/like
+      def like
+        like = current_user.likes.new(likeable: @question)
+
+        if like.save
+          render json: { like: like }, status: :ok
+        else
+          render json: { errors: like.errors }, status: :unprocessable_entity
+        end
+      end
+
+      # DELETE /api/v1/questions/:id/unlike
+      def unlike
+        current_user.likes.find_by(likeable: @question).destroy
+
+        render json: { message: ['Task destroyed successfully'] }, status: :ok
       end
 
       private
