@@ -15,7 +15,7 @@ module Api
       # GET /api/v1/questions/:id
       def show
         @question.increment!(:views_count)
-        render json: { question: @question }, status: :ok
+        @likes_count = LikesCountQuery.new(@question)
       end
 
       # POST /api/v1/questions
