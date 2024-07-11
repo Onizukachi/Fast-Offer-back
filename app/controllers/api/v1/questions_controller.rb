@@ -50,7 +50,7 @@ module Api
       end
 
       def question_params
-        params.require(:question).permit(:body)
+        params.require(:question).permit(:body).merge(author: current_user)
       end
     end
   end

@@ -11,7 +11,7 @@ module Api
         @answer = @question.answers.build answer_params
 
         if @answer.save
-          render json: @answer, status: :created
+          render template: 'api/v1/answers/create', formats: :json
         else
           render json: @answer.errors, status: :unprocessable_entity
         end
@@ -42,7 +42,7 @@ module Api
       end
 
       def answer_params
-        params.require(:answer).permit(:body).merge(user: current_user)
+        params.require(:answer).permit(:body).merge(author: current_user)
       end
     end
   end
