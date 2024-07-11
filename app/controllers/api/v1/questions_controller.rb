@@ -43,24 +43,6 @@ module Api
         @group.destroy
       end
 
-      # POST /api/v1/questions/:id/like
-      def like
-        like = current_user.likes.new(likeable: @question)
-
-        if like.save
-          render json: { like: like }, status: :ok
-        else
-          render json: { errors: like.errors }, status: :unprocessable_entity
-        end
-      end
-
-      # DELETE /api/v1/questions/:id/unlike
-      def unlike
-        current_user.likes.find_by(likeable: @question).destroy
-
-        render json: { message: ['Task destroyed successfully'] }, status: :ok
-      end
-
       private
 
       def set_question

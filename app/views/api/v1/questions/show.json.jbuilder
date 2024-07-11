@@ -22,4 +22,18 @@ json.question do
     json.title position.title
     json.image_filename position.image_filename
   end
+  json.answers @question.answers do |answer|
+    json.id answer.id
+    json.body answer.body
+    json.liked current_user ? answer.likes.exists?(user_id: current_user.id) : false
+    json.like_count answer.likes.size
+    json.author do
+      json.id answer.author.id
+      json.email answer.author.email
+      json.nickname answer.author.nickname
+      json.role answer.author.role
+      json.is_banned answer.author.is_banned
+      json.gravatar_hash answer.author.gravatar_hash
+    end
+  end
 end

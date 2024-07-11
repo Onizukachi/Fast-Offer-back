@@ -18,12 +18,15 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :questions do
-        member do
-          post 'like', to: 'questions#like'
-          delete 'unlike', to: 'questions#unlike'
+        resources :answers, only: %i[create update destroy] do
         end
       end
       resources :positions, except: %i[show]
+      resources :likes, only: [:create] do
+        collection do
+          delete 'unlike', to: 'likes#unlike'
+        end
+      end
     end
   end
 end
