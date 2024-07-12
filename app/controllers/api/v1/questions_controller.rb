@@ -8,7 +8,11 @@ module Api
 
       # GET /api/v1/questions
       def index
-        @questions = Question.all.preload(:answers, :author, :tags, :positions, :likes)
+        @questions = Question.all.preload(:author,
+                                          :tags,
+                                          :positions,
+                                          :likes,
+                                          answers: [:author, :likes ])
         @likes_count = LikesCountQuery.new(@questions)
       end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_10_113638) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_11_115820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -33,6 +33,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_113638) do
     t.datetime "updated_at", null: false
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "it_grades", force: :cascade do |t|
+    t.integer "grade", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "jwt_denylist", force: :cascade do |t|
@@ -77,6 +83,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_113638) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.bigint "it_grades_id", null: false
+    t.index ["it_grades_id"], name: "index_questions_on_it_grades_id"
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
@@ -135,6 +143,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_113638) do
   add_foreign_key "likes", "users"
   add_foreign_key "position_questions", "positions"
   add_foreign_key "position_questions", "questions"
+  add_foreign_key "questions", "it_grades", column: "it_grades_id"
   add_foreign_key "questions", "users"
   add_foreign_key "taggings", "tags"
 end
