@@ -8,7 +8,7 @@ module Api
         like = current_user.likes.build(like_params)
 
         if like.save
-          render json: { like: }, status: :ok
+          render json: LikeSerializer.new(like), status: :created
         else
           render json: { errors: like.errors }, status: :unprocessable_entity
         end
@@ -16,7 +16,10 @@ module Api
 
       # DELETE /api/v1/likes/unlike
       def unlike
-        current_user.likes.find_by!(likeable_id: params[:likeable_id], likeable_type: params[:likeable_type]).destroy
+        like = current_user.likes.find_by!(likeable_id: params[:likeable_id], likeable_type: params[:likeable_type])
+        like.destroy
+
+        head :no_content
       end
 
       private

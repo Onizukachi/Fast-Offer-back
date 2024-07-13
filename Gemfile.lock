@@ -114,17 +114,11 @@ GEM
     erubi (1.13.0)
     et-orbi (1.2.11)
       tzinfo
-    ethon (0.16.0)
-      ffi (>= 1.15.0)
     faraday (2.10.0)
       faraday-net_http (>= 2.0, < 3.2)
       logger
     faraday-net_http (3.1.0)
       net-http
-    faraday-typhoeus (1.1.0)
-      faraday (~> 2.0)
-      typhoeus (~> 1.4)
-    ffi (1.17.0-x86_64-linux-gnu)
     fugit (1.11.0)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -139,6 +133,8 @@ GEM
     jbuilder (2.12.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
     jwt (2.8.2)
       base64
     logger (1.6.0)
@@ -169,9 +165,6 @@ GEM
     nio4r (2.7.3)
     nokogiri (1.16.6-x86_64-linux)
       racc (~> 1.4)
-    ollama-ai (1.2.1)
-      faraday (~> 2.9)
-      faraday-typhoeus (~> 1.1)
     orm_adapter (0.5.0)
     pg (1.5.6)
     psych (5.1.2)
@@ -250,8 +243,6 @@ GEM
     thor (1.3.1)
     tilt (2.4.0)
     timeout (0.4.1)
-    typhoeus (1.4.1)
-      ethon (>= 0.9.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uri (0.13.0)
@@ -266,7 +257,6 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    yard (0.9.36)
     zeitwerk (2.6.16)
 
 PLATFORMS
@@ -282,8 +272,8 @@ DEPENDENCIES
   dotenv
   faraday
   jbuilder
+  jsonapi-serializer
   nokogiri
-  ollama-ai (~> 1.2.1)
   pg (~> 1.1)
   puma (>= 5.0)
   rack-cors
@@ -293,7 +283,6 @@ DEPENDENCIES
   sidekiq
   sidekiq-scheduler
   tzinfo-data
-  yard
 
 RUBY VERSION
    ruby 3.2.2p53

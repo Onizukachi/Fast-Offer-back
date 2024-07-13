@@ -5,30 +5,37 @@ module Api
     class AnswersController < ApplicationController
       before_action :authenticate_user!
       before_action :set_question!
+      before_action :set_answer!, only: %i[update destroy]
 
-      # POST /api/v1/questions/:id/answers
+      # POST /api/v1/questions/:question_id/answers
       def create
-        @answer = @question.answers.build answer_params
+        answer = @question.answers.build answer_params
+        options = {
+          include: %i[author comments],
+          params: { current_user: current_user }
+        }
 
-        if @answer.save
-          render template: 'api/v1/answers/create', formats: :json
+        if answer.save
+          render json: AnswerSerializer.new(answer, options), status: :created
         else
-          render json: @answer.errors, status: :unprocessable_entity
+          render json: answer.errors, status: :unprocessable_entity
         end
       end
 
-      # PATCH/PUT /api/v1/questions/:id/answers/:id
+      # PATCH/PUT /api/v1/questions/:question_id/answers/:id
       def update
         if @answer.update(answer_params)
-          render json: @answer
+          render json: AnswerSerializer.new(answer, options), status: :ok
         else
           render json: @answer.errors, status: :unprocessable_entity
         end
       end
 
-      # DELETE /api/v1/questions/:id/answers/:id
+      # DELETE /api/v1/questions/:question_id/answers/:id
       def destroy
         @answer.destroy
+
+        head :no_content
       end
 
       private
@@ -38,7 +45,7 @@ module Api
       end
 
       def set_answer!
-        @answer = @question.answers.find(params[:id])
+        @answer = @question.answers.find params[:id]
       end
 
       def answer_params

@@ -32,8 +32,7 @@ gem 'rails-i18n', '~> 7.0.0'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
-# Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+gem 'jsonapi-serializer'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -61,8 +60,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'ollama-ai', '~> 1.2.1'
-  gem 'yard'
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end

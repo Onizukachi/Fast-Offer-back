@@ -4,22 +4,28 @@ module Api
   module V1
     class QuestionsController < ApplicationController
       before_action :authenticate_user!, except: %i[index show]
-      before_action :set_question, except: %i[index]
+      before_action :set_question, except: %i[index create]
 
       # GET /api/v1/questions
       def index
-        @questions = Question.all.preload(:author,
-                                          :tags,
-                                          :positions,
-                                          :likes,
-                                          answers: [:author, :likes ])
-        @likes_count = LikesCountQuery.new(@questions)
+        @questions = Question.all.preload(:author, :positions, :tags, :likes, :answers)
+        options = {
+          include: %i[author positions tags],
+          params: { current_user: current_user }
+        }
+
+        render json: QuestionSerializer.new(@questions, options)
       end
 
       # GET /api/v1/questions/:id
       def show
         @question.increment!(:views_count)
-        @likes_count = LikesCountQuery.new(@question)
+        options = {
+          include: %i[author positions tags answers.author answers.comments],
+          params: { current_user: current_user }
+        }
+
+        render json: QuestionSerializer.new(@question, options)
       end
 
       # POST /api/v1/questions
@@ -50,7 +56,7 @@ module Api
       private
 
       def set_question
-        @question = Question.find params[:id]
+        @question = Question.preload(:author, :positions, :tags, :likes, answers: %i[author comments]).find params[:id]
       end
 
       def question_params

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class Question < ApplicationRecord
+  include Authorable
+
   acts_as_taggable_on :tags
 
-  belongs_to :author, class_name: 'User', foreign_key: 'user_id'
   belongs_to :grade, class_name: 'ItGrade', foreign_key: 'it_grades_id'
   has_many :answers, dependent: :destroy
   has_many :position_questions, dependent: :destroy
