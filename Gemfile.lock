@@ -130,9 +130,6 @@ GEM
     irb (1.13.2)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    jbuilder (2.12.0)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
     jwt (2.8.2)
@@ -271,7 +268,6 @@ DEPENDENCIES
   devise-jwt
   dotenv
   faraday
-  jbuilder
   jsonapi-serializer
   nokogiri
   pg (~> 1.1)

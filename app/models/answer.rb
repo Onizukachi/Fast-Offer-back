@@ -9,5 +9,5 @@ class Answer < ApplicationRecord
   belongs_to :question, counter_cache: true
   has_many :likes, as: :likeable, dependent: :destroy
 
-  validates :body, presence: true, length: { minimum: 5 }
+  validates :body, uniqueness: true, presence: true, length: { minimum: 5 }
 end

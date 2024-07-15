@@ -29,9 +29,6 @@ gem 'acts-as-taggable-on', '~> 10.0'
 
 gem 'rails-i18n', '~> 7.0.0'
 
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder"
-
 gem 'jsonapi-serializer'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
