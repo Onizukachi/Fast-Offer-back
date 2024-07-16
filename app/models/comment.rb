@@ -5,5 +5,5 @@ class Comment < ApplicationRecord
 
   belongs_to :commentable, polymorphic: true
 
-  validates :body, presence: true, length: { minimum: 4 }
+  validates :body, presence: true, length: { minimum: 3 }
 end

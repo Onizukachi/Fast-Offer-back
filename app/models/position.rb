@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class Position < ApplicationRecord
-  validates :title, presence: true, uniqueness: { case_sensitive: false }
+  has_many :position_questions, dependent: :destroy
+  has_many :questions, through: :position_questions
 
-  has_many :questions, through: :position_questions, dependent: :destroy
+  validates :title, presence: true, uniqueness: { case_sensitive: false }
 
   default_scope { order(:title) }
 
