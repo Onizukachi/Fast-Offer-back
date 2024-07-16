@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :user, aliases: [:author] do
-    username { Faker::Name.first_name }
+    sequence(:username) { |n| "#{Faker::Name.first_name}#{n}}" }
     email { Faker::Internet.email }
     password { 'TestPassword333!' }
     password_confirmation { 'TestPassword333!' }
