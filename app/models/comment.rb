@@ -2,6 +2,7 @@
 
 class Comment < ApplicationRecord
   include Authorable
+  include Likeable
 
   belongs_to :commentable, polymorphic: true
 
