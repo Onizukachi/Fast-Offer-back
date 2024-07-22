@@ -19,6 +19,8 @@ gem 'sidekiq-scheduler'
 
 gem 'devise-jwt'
 
+gem 'ancestry'
+
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
 

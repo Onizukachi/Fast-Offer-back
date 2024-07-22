@@ -7,5 +7,4 @@ class AnswerSerializer
   attributes :id, :body, :likes_count
 
   belongs_to :author, id_method_name: :user_id, serializer: :user
-  has_many :comments
 end

@@ -21,7 +21,7 @@ module Api
       def show
         @question.increment!(:views_count)
         options = {
-          include: %i[author positions tags answers.author answers.comments answers.comments.author],
+          include: %i[author positions tags answers answers.author],
           params: { current_user: current_user }
         }
 

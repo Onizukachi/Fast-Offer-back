@@ -31,6 +31,7 @@ Rails.application.routes.draw do
           delete 'unlike', to: 'likes#unlike'
         end
       end
+      resources :comments, except: %i[edit new]
     end
   end
 end

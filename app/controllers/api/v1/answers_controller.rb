@@ -11,7 +11,7 @@ module Api
       def create
         answer = @question.answers.build answer_params
         options = {
-          include: %i[author comments],
+          include: %i[author],
           params: { current_user: current_user }
         }
 

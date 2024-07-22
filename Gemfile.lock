@@ -77,6 +77,8 @@ GEM
       tzinfo (~> 2.0)
     acts-as-taggable-on (10.0.0)
       activerecord (>= 6.1, < 7.2)
+    ancestry (4.3.3)
+      activerecord (>= 5.2.6)
     base64 (0.2.0)
     bcrypt (3.1.20)
     bigdecimal (3.1.8)
@@ -297,6 +299,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on (~> 10.0)
+  ancestry
   bootsnap
   byebug
   database_cleaner
