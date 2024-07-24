@@ -28,7 +28,7 @@ module Api
 
       # DELETE /api/v1/comments/:id
       def destroy
-        comment = current_user.likes.find(params[:id])
+        comment = current_user.comments.find(params[:id])
         comment.destroy
 
         head :no_content
