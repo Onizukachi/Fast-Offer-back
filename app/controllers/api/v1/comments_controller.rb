@@ -5,6 +5,7 @@ module Api
     class CommentsController < ApplicationController
       before_action :authenticate_user!
       before_action :set_commentable!, only: %i[index create]
+      before_action :set_comment!, only: %i[update destroy]
 
       # GET /api/v1/comments
       def index
@@ -26,10 +27,18 @@ module Api
         end
       end
 
+      # PATCH/PUT /api/v1/comments/:id
+      def update
+        if @comment.update(comment_params)
+          render json: CommentSerializer.call(@comment, current_user), status: :ok
+        else
+          render json: { errors: @comment.errors }, status: :unprocessable_entity
+        end
+      end
+
       # DELETE /api/v1/comments/:id
       def destroy
-        comment = current_user.comments.find(params[:id])
-        comment.destroy
+        @comment.destroy
 
         head :no_content
       end
@@ -38,6 +47,10 @@ module Api
 
       def comment_params
         params.require(:comment).permit(:body).merge(author: current_user)
+      end
+
+      def set_comment!
+        @comment = current_user.comments.find params[:id]
       end
 
       def build_comment

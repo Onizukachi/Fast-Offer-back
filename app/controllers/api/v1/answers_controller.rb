@@ -18,7 +18,7 @@ module Api
         if answer.save
           render json: AnswerSerializer.new(answer, options), status: :created
         else
-          render json: answer.errors, status: :unprocessable_entity
+          render json: answer.errors.full_messages, status: :unprocessable_entity
         end
       end
 
@@ -27,7 +27,7 @@ module Api
         if @answer.update(answer_params)
           render json: AnswerSerializer.new(answer, options), status: :ok
         else
-          render json: @answer.errors, status: :unprocessable_entity
+          render json: @answer.errors.full_messages, status: :unprocessable_entity
         end
       end
 
