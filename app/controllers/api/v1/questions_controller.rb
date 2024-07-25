@@ -8,13 +8,19 @@ module Api
 
       # GET /api/v1/questions
       def index
-        @questions = Question.all.preload(:author, :positions, :tags, :likes, :answers)
+        questions = Question.preload(:author, :positions, :tags, :likes, :answers)
+        meta_params = {}
+        meta_params.merge!(after: params[:after]) if params[:after]
+        meta_params.merge!(limit: params[:limit].to_i) if params[:limit]
+        page = questions.cursor_paginate(**meta_params).fetch
+
         options = {
           include: %i[author positions tags],
-          params: { current_user: current_user }
+          params: { current_user: current_user },
+          meta: { has_next: page.has_next?, next_cursor: page.next_cursor }
         }
 
-        render json: QuestionSerializer.new(@questions, options)
+        render json: QuestionSerializer.new(page.records, options)
       end
 
       # GET /api/v1/questions/:id
