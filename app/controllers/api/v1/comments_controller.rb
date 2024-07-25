@@ -23,7 +23,7 @@ module Api
         if comment.save
           render json: CommentSerializer.call(comment, current_user), status: :created
         else
-          render json: { errors: comment.errors }, status: :unprocessable_entity
+          render json: comment.errors.full_messages, status: :unprocessable_entity
         end
       end
 
@@ -32,7 +32,7 @@ module Api
         if @comment.update(comment_params)
           render json: CommentSerializer.call(@comment, current_user), status: :ok
         else
-          render json: { errors: @comment.errors }, status: :unprocessable_entity
+          render json: @comment.errors.full_messages, status: :unprocessable_entity
         end
       end
 
