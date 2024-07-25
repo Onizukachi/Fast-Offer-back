@@ -8,10 +8,14 @@ module Api
 
       # GET /api/v1/questions
       def index
-        questions = Question.preload(:author, :positions, :tags, :likes, :answers)
+        questions = Question.preload(:author, :positions, :tags, :likes, :answers).where('body ILIKE ?', "%#{ActiveRecord::Base.sanitize_sql_like(params[:query])}%")
+        # if params[:query].present?
+        #   questions.where('body ILIKE ?', "%#{ActiveRecord::Base.sanitize_sql_like(params[:query])}%")
+        # end
+
         meta_params = {}
-        meta_params.merge!(after: params[:after]) if params[:after]
-        meta_params.merge!(limit: params[:limit].to_i) if params[:limit]
+        meta_params.merge!(after: params[:after]) if params[:after].present?
+        meta_params.merge!(limit: params[:limit].to_i) if params[:limit].present?
         page = questions.cursor_paginate(**meta_params).fetch
 
         options = {
