@@ -8,10 +8,8 @@ module Api
 
       # GET /api/v1/questions
       def index
-        questions = Question.preload(:author, :positions, :tags, :likes, :answers).where('body ILIKE ?', "%#{ActiveRecord::Base.sanitize_sql_like(params[:query])}%")
-        # if params[:query].present?
-        #   questions.where('body ILIKE ?', "%#{ActiveRecord::Base.sanitize_sql_like(params[:query])}%")
-        # end
+        questions = Question.preload(:author, :positions, :tags, :likes, :answers, :grade)
+                            .where('body ILIKE ?', "%#{ActiveRecord::Base.sanitize_sql_like(params[:query])}%")
 
         meta_params = {}
         meta_params.merge!(after: params[:after]) if params[:after].present?
@@ -19,7 +17,7 @@ module Api
         page = questions.cursor_paginate(**meta_params).fetch
 
         options = {
-          include: %i[author positions tags],
+          include: %i[author positions tags grade],
           params: { current_user: current_user },
           meta: { has_next: page.has_next?, next_cursor: page.next_cursor }
         }
@@ -31,7 +29,7 @@ module Api
       def show
         @question.increment!(:views_count)
         options = {
-          include: %i[author positions tags answers answers.author],
+          include: %i[author positions tags answers answers.author grade],
           params: { current_user: current_user }
         }
 
@@ -41,6 +39,8 @@ module Api
       # POST /api/v1/questions
       def create
         @question = current_user.questions.build(question_params)
+
+        raise
 
         if @question.save
           render json: @question, status: :created
@@ -70,7 +70,7 @@ module Api
       end
 
       def question_params
-        params.require(:question).permit(:body).merge(author: current_user)
+        params.require(:question).permit(:body, :grade_id, tags: [], position_ids: []).merge(author: current_user)
       end
     end
   end

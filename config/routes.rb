@@ -32,6 +32,8 @@ Rails.application.routes.draw do
         end
       end
       resources :comments, except: %i[edit new]
+      resources :it_grades, only: %i[index]
+      resources :tags, only: %i[index]
     end
   end
 end

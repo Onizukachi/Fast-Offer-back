@@ -8,9 +8,7 @@ module Api
 
       # GET /api/v1/positions
       def index
-        @positions = Position.all
-
-        render json: { data: @positions }, status: :ok
+        render json: PositionSerializer.new(Position.all)
       end
 
       # POST /api/v1/positions
