@@ -40,12 +40,10 @@ module Api
       def create
         @question = current_user.questions.build(question_params)
 
-        raise
-
         if @question.save
           render json: @question, status: :created
         else
-          render json: @question.errors, status: :unprocessable_entity
+          render json: @question.errors.messages, status: :unprocessable_entity
         end
       end
 
@@ -70,7 +68,9 @@ module Api
       end
 
       def question_params
-        params.require(:question).permit(:body, :grade_id, tags: [], position_ids: []).merge(author: current_user)
+        params.require(:question)
+              .permit(:body, :it_grades_id, tag_list: [], position_ids: [])
+              .merge(author: current_user)
       end
     end
   end

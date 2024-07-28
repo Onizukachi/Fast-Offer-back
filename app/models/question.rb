@@ -4,6 +4,8 @@ class Question < ApplicationRecord
   include Authorable
   include Likeable
 
+  include ActionView::Helpers::SanitizeHelper
+
   acts_as_taggable_on :tags
 
   belongs_to :grade, class_name: 'ItGrade', foreign_key: 'it_grades_id'
@@ -11,5 +13,19 @@ class Question < ApplicationRecord
   has_many :position_questions, dependent: :destroy
   has_many :positions, through: :position_questions
 
-  validates :body, presence: true, length: { minimum: 5 }, uniqueness: true
+  validate :must_have_at_least_one_position
+  validate :minimum_length
+  validates :body, presence: true, uniqueness: true
+
+  private
+
+  def minimum_length
+    errors.add(:body, :too_short, count: 6) if strip_tags(body).length < 6
+  end
+
+  def must_have_at_least_one_position
+    return unless positions.empty?
+
+    errors.add(:positions, 'должен быть указан, как минимум один')
+  end
 end
