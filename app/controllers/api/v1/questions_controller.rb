@@ -58,7 +58,7 @@ module Api
 
       # DELETE /api/v1/questions/:id
       def destroy
-        @group.destroy
+        @question.destroy
       end
 
       private
