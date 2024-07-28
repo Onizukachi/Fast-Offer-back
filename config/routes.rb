@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :questions do
-        resources :answers, only: %i[create update destroy] do
+        resources :answers do
         end
       end
       resources :positions, except: %i[show]
@@ -31,7 +31,7 @@ Rails.application.routes.draw do
           delete 'unlike', to: 'likes#unlike'
         end
       end
-      resources :comments, except: %i[edit new]
+      resources :comments
       resources :it_grades, only: %i[index]
       resources :tags, only: %i[index]
     end
