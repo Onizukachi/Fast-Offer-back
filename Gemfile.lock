@@ -164,6 +164,7 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.4)
+    mini_magick (5.0.1)
     mini_mime (1.1.5)
     minitest (5.24.0)
     msgpack (1.7.2)
@@ -317,6 +318,7 @@ DEPENDENCIES
   faraday
   freezolite
   jsonapi-serializer
+  mini_magick
   nokogiri
   pg (~> 1.1)
   puma (>= 5.0)
