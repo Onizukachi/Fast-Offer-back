@@ -6,6 +6,6 @@ class LikePolicy < ApplicationPolicy
   end
 
   def unlike?
-    user.likes.any? { |like| like.id == record.id }
+    true
   end
 end
