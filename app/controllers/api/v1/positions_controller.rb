@@ -5,6 +5,8 @@ module Api
     class PositionsController < ApplicationController
       before_action :authenticate_user!, only: %i[create update destroy]
       before_action :set_position, only: %i[update destroy]
+      before_action :authorize_position!
+      after_action :verify_authorized
 
       # GET /api/v1/positions
       def index
@@ -44,6 +46,10 @@ module Api
 
       def position_params
         params.require(:position).permit(:title)
+      end
+
+      def authorize_position!
+        authorize(@position || Position)
       end
     end
   end

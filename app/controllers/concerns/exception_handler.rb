@@ -5,13 +5,16 @@ module ExceptionHandler
 
   included do
     rescue_from ActiveRecord::RecordNotFound do |e|
-      json_response({ error: e.message }, :not_found)
+      render json: { error: e.message }, status: :not_found
     end
     rescue_from ActiveRecord::RecordInvalid do |e|
-      json_response({ error: e.message }, :unprocessable_entity)
+      render json: { error: e.message }, status: :unprocessable_entity
     end
     rescue_from ActiveRecord::RecordNotDestroyed do |e|
-      json_response({ errors: e.record.errors }, :unprocessable_entity)
+      render json: { errors: e.record.errors }, status: :unprocessable_entity
+    end
+    rescue_from Pundit::NotAuthorizedError do |_|
+      render json: { error: 'You are not authorized to perform this action.' }, status: :unauthorized
     end
   end
 end

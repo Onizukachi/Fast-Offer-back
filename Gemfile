@@ -74,3 +74,5 @@ group :test do
   gem 'shoulda-matchers', '~> 6.0'
   gem 'factory_bot_rails'
 end
+
+gem "pundit", "~> 2.3"

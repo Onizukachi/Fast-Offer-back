@@ -5,6 +5,8 @@ module Api
     class QuestionsController < ApplicationController
       before_action :authenticate_user!, except: %i[index show]
       before_action :set_question, except: %i[index create]
+      before_action :authorize_question!
+      after_action :verify_authorized
 
       # GET /api/v1/questions
       def index
@@ -71,6 +73,10 @@ module Api
         params.require(:question)
               .permit(:body, :it_grades_id, tag_list: [], position_ids: [])
               .merge(author: current_user)
+      end
+
+      def authorize_question!
+        authorize(@question || Question)
       end
     end
   end

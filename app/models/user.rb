@@ -22,6 +22,10 @@ class User < ApplicationRecord
     username || email.split('@').first
   end
 
+  def author?(record)
+    self == record.author
+  end
+
   def ban
     update(is_banned: true) if basic_role?
   end

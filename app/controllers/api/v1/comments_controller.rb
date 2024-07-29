@@ -6,6 +6,8 @@ module Api
       before_action :authenticate_user!
       before_action :set_commentable!, only: %i[index create]
       before_action :set_comment!, only: %i[update destroy]
+      before_action :authorize_comment!
+      after_action :verify_authorized
 
       # GET /api/v1/comments
       def index
@@ -65,6 +67,10 @@ module Api
         commentable_id = params[:commentable_id] || params.dig(:params, :commentable_id)
         commentable_type = params[:commentable_type] || params.dig(:params, :commentable_type)
         @commentable = commentable_type.classify.constantize.find(commentable_id)
+      end
+
+      def authorize_comment!
+        authorize(@comment || Comment)
       end
     end
   end

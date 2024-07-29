@@ -6,6 +6,8 @@ module Api
       before_action :authenticate_user!
       before_action :set_question!
       before_action :set_answer!, only: %i[update destroy]
+      before_action :authorize_answer!
+      after_action :verify_authorized
 
       # POST /api/v1/questions/:question_id/answers
       def create
@@ -50,6 +52,10 @@ module Api
 
       def answer_params
         params.require(:answer).permit(:body).merge(author: current_user)
+      end
+
+      def authorize_answer!
+        authorize(@answer || Answer)
       end
     end
   end
