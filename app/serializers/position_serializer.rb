@@ -3,5 +3,5 @@
 class PositionSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :title, :image_filename
+  attributes :id, :title, :image_url
 end
