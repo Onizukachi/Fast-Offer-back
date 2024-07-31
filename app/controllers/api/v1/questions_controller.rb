@@ -11,7 +11,11 @@ module Api
       # GET /api/v1/questions
       def index
         questions = Question.preload(:author, :positions, :tags, :likes, :answers, :grade)
-                            .where('body ILIKE ?', "%#{ActiveRecord::Base.sanitize_sql_like(params[:query])}%")
+        questions = questions.where('body ILIKE ?', "%#{ActiveRecord::Base.sanitize_sql_like(params[:query])}%") if params[:query].present?
+        questions = questions.where(it_grades_id: params[:grade_id]) if params[:grade_id].present?
+        if params[:position_ids].present?
+          questions = questions
+        end
 
         meta_params = {}
         meta_params.merge!(after: params[:after]) if params[:after].present?
