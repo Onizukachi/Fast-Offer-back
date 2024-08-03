@@ -29,6 +29,14 @@ module Filters
           apply: ->(scope, params) {
             scope.where(positions: { id: params[:position_ids] })
           }
+        }.freeze,
+        tag_filter: {
+          apply?: ->(params) {
+            params[:tag].present?
+          },
+          apply: ->(scope, params) {
+            scope.tagged_with((params[:tag]))
+          }
         }.freeze
       }.freeze
 
