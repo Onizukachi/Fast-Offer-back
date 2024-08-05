@@ -15,6 +15,8 @@ class User < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :favorites, dependent: :destroy
+  has_many :favorite_questions, through: :favorites, source: :question
 
   before_save :set_gravatar_hash, if: :email_changed?
 

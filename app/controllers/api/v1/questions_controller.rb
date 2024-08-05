@@ -3,6 +3,7 @@
 module Api
   module V1
     class QuestionsController < ApplicationController
+      include CursorMetaParamsHandler
       before_action :authenticate_user!, except: %i[index show]
       before_action :set_question, except: %i[index create]
       before_action :authorize_question!
@@ -10,36 +11,17 @@ module Api
 
       # GET /api/v1/questions
       def index
-        questions = Question.includes(:author, :positions, :tags, :likes, :answers, :grade)
-        questions = ::Filters::Questions::IndexFilter.call(questions, params)
+        filter_questions
+        fetch_page
 
-        meta_params = {}
-        meta_params.merge!(after: params[:after]) if params[:after].present?
-        meta_params.merge!(limit: params[:limit].to_i) if params[:limit].present?
-        if params[:sort].present? && params[:order].present?
-          meta_params.merge!(order: { params[:sort] => params[:order] })
-        end
-
-        page = questions.cursor_paginate(**meta_params).fetch
-
-        options = {
-          include: %i[author positions tags grade],
-          params: { current_user: current_user },
-          meta: { has_next: page.has_next?, next_cursor: page.next_cursor }
-        }
-
-        render json: QuestionSerializer.new(page.records, options)
+        render json: QuestionSerializer.new(@page.records, index_serializer_options)
       end
 
       # GET /api/v1/questions/:id
       def show
         @question.increment!(:views_count)
-        options = {
-          include: %i[author positions tags answers answers.author grade],
-          params: { current_user: current_user }
-        }
 
-        render json: QuestionSerializer.new(@question, options)
+        render json: QuestionSerializer.new(@question, show_serializer_options)
       end
 
       # POST /api/v1/questions
@@ -69,8 +51,38 @@ module Api
 
       private
 
+      def fetch_page
+        @page = @questions.cursor_paginate(**cursor_meta_params).fetch
+      end
+
+      def filter_questions
+        questions = Question.includes(:author, :positions, :tags, :likes, :answers, :grade, :favorites)
+        @questions = ::Filters::Questions::IndexFilter.call(questions, params)
+      end
+
+      def index_serializer_options
+        {
+          include: %i[author positions tags grade],
+          params: { current_user: current_user },
+          meta: { has_next: @page.has_next?, next_cursor: @page.next_cursor }
+        }
+      end
+
+      def show_serializer_options
+        {
+          include: %i[author positions tags answers answers.author grade],
+          params: { current_user: current_user }
+        }
+      end
+
       def set_question
-        @question = Question.preload(:author, :positions, :tags, :likes, answers: %i[author comments]).find params[:id]
+        @question = Question.preload(:author,
+                                     :positions,
+                                     :tags,
+                                     :likes,
+                                     :favorites,
+                                     answers: %i[author comments])
+                            .find params[:id]
       end
 
       def question_params

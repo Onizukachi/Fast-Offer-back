@@ -12,6 +12,8 @@ class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :position_questions, dependent: :destroy
   has_many :positions, through: :position_questions
+  has_many :favorites, dependent: :destroy
+  has_many :favorite_users, through: :favorites, source: :user
 
   validate :must_have_at_least_one_position
   validate :minimum_length

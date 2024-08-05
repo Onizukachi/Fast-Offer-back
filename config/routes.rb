@@ -34,6 +34,11 @@ Rails.application.routes.draw do
       resources :comments
       resources :it_grades, only: %i[index]
       resources :tags, only: %i[index]
+      resources :favorites, only: %i[index create] do
+        collection do
+          delete 'unfavorite', to: 'favorites#unfavorite'
+        end
+      end
     end
   end
 end
